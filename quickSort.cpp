@@ -59,6 +59,7 @@ int partition(int *array, int start, int last)
 		j++;
 	}
 	swap(array[++i], key);
+	
 	return i;
 }
 
