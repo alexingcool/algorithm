@@ -51,6 +51,77 @@ int GetLongestLength2(int *array, int size)
 	return length;
 }
 
+//recursive solution
+int findMaxLen(int *array, int size, int index)
+{
+	if (array == NULL || size <= 0)
+		return -1;
+
+	if (index == size)
+	{
+		return 1;
+	}
+
+	int length = findMaxLen(array, size, index + 1);
+
+	if (array[index - length] == array[index])
+		length++;
+
+	return length;
+}
+
+//把所有平台和他们的位置找出来
+map<int, int> posMap;
+
+int FindLongestPlatform(int *array, int size)
+{
+	if (array == NULL || size <= 0)
+		return -1;
+
+	int prefix = INF;
+	for (int i = 0; i < size; i++)
+	{
+		if (array[i] != prefix)
+		{
+			prefix = array[i];
+			posMap.insert(make_pair(array[i], i));
+		}
+	}
+
+	return 0;
+}
+
+//找出所有平台
+struct Node
+{
+	Node(int left = 0, int right = 0) : start(left), end(right) {}
+	int start;
+	int end;
+};
+
+int findMaxLen(int *array, int size, vector<Node> &nvec)
+{
+	if (array == NULL || size <= 0)
+		return -1;
+
+	int leftIndex = 0;
+	int rightIndex = 0;
+
+	while (rightIndex < size)
+	{
+		if (array[rightIndex] == array[leftIndex])
+			rightIndex++;
+		else
+		{
+			nvec.push_back(Node(leftIndex + 1, rightIndex));
+			leftIndex = rightIndex;
+		}
+	}
+	nvec.push_back(Node(leftIndex +1, rightIndex));
+
+	return 0;
+}
+
 int main()
 {
 	int longest_length = GetLongestLength2(array, kArraySize);
